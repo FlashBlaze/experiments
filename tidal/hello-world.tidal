@@ -1,0 +1,31 @@
+{-
+d1 $ sound "hh hh ht ht"
+
+d2 $ sound "cp cp pluck:1 pad:1"
+-}
+
+{- 
+d1 $ sound "bd <arpy:1 arpy:2 arpy:3>"
+
+d2 $ sound "ht cp odx:4"
+-}
+
+{-
+d1 $ sound "[bd sn]*2 cp"
+
+d2 $ sound "electro1:2 [oc:1 hh oc:2]"
+
+d3 $ sound "sitar:3"
+-}
+
+{-
+d1 $ sound "sn*4" # crush "10"
+
+d2 $ sound "cp" # gain "1.25"
+
+d3 $ sound "bd*4" # gain "1 0.8 0.5 5"
+
+d4 $ sound "hh <arpy:1 arpy:2 arpy:3>"
+
+d5 $ sound "sd:1" # gain "5"
+-}
