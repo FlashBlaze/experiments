@@ -1,0 +1,9 @@
+-- s is shorhand for sound
+d1 $ s "kick*2 clap" # pan "0 1 0.5 1"
+
+-- this is similar to 
+-- d2 $ sound "cpu:0 cpu:4 cpu:2 cpu:3 cpu:2 cpu:5"
+d2 $ n "0 4 2 3 2 5" # s "cpu"
+
+
+d1 $ n "0 3 [4 4] 2" # s "kick"
