@@ -1,0 +1,42 @@
+-- first half is taken by hi, and the 2nd half is divided into 3 parts and lo is played 3 times in that 2nd half
+d1 $ s "hi lo*3"
+
+-- this means, each sound takes equal time
+-- this is same as "hi lo lo lo"
+d1 $ s "hi lo!3"
+
+-- slowing down
+-- it alternates between playing low note of lo in one cycle and high note of lo in the second cycle
+d1 $ s "hi lo/2"
+
+-- always plays clap and alternates between hi and bd 
+d1 $ s "clap [hi bd]/2"
+
+d1 $ s "[clap:4 [lo hi bd sd]/2]*2"
+
+-- similar to *2 but using functions
+d1 $ fast 2 $ s "clap:4 [lo hi bd sd]/2"
+
+-- polyphony with ,
+-- this is similar to
+-- d1 $ s "bd clap"
+-- d2 $ s "hh:3!4"
+d1 $ s "[bd clap, hh:3*4]"
+
+d1 $ s "[bd clap, hh:3*3, mt ht lt mt]"
+
+d1 $ s "[bd clap, hh:3*3, mt ht lt mt [clap:5 snare]]"
+
+
+d1 $ fast 4 $ s "[bd sd, arpy clap hi]"
+
+-- previously the subsequence arpy clap and hi would play in one cycle
+-- the curly braces will play bd sd in one cycle but the other sub seqence will not and the steps will align
+-- bd   sd   bd sd   bd   sd
+-- arpy clap hi arpy clap hi
+d1 $ fast 4 $ s "{bd sd, arpy clap hi}"
+
+-- one step per cycle
+d1 $ fast 2 $ s "hi <arpy:0, clap>"
+
+d1 $ fast 4 $ s "hi <arpy arpy:1 [arpy:2 arpy:5] arpy:3>"

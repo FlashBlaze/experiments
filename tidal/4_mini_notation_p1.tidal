@@ -7,3 +7,6 @@ d2 $ n "0 4 2 3 2 5" # s "cpu"
 
 
 d1 $ n "0 3 [4 4] 2" # s "kick"
+
+-- ~ specifies an empty step known as musical rest
+d1 $ n "0 4 4 ~ 2 ~" # s "cpu"
