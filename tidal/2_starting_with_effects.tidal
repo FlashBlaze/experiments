@@ -1,0 +1,10 @@
+-- effects listed here:
+-- https://tidalcycles.org/index.php/All_effects_and_synths
+-- # is used when combining two patterns and 
+-- $ is taking everything to the right and treating it as a whole pattern
+
+d1 $ n "0 5 [2 3] 1" # s "cpu" # crush "8" # speed "2"
+
+d1 $ s "cpu*8" # n "0 5 [2 3] 1"
+
+d1 $ squiz "0 2 4 6 8*2 2*2 6 3" # n "0 4 [6 8] 8" # s "cpu"
