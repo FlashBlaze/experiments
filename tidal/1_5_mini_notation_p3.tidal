@@ -1,0 +1,19 @@
+-- The list is here:
+-- https://tidalcycles.org/index.php/Tutorial#Euclidean_Sequences
+
+-- fills the sound 3 times in 8 spaces
+d1 $ s "bd(3,8)"
+
+d2 $ s "clap(3,8)"
+
+
+-- third parameter shifts the pattern right
+d1 $ s "bd(<3, 5>,8)"
+
+d2 $ s "clap(3,8,2)"
+
+d3 $ s "snare"
+
+d4 $ s "hh*2" # gain "2"
+
+d5 $ slow 0.5 $ s "glitch2:3 glitch2:2"

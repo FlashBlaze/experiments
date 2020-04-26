@@ -42,4 +42,5 @@ d4 $ sound "kicklinn*2"
 
 d1 $ sound "kicklinn sd:1 popkick:4*2 " # pan "0 1 0.5 0.5"
 
+-- euclidian algorithm
 d2 $ sound "arpy(3, 8)" # n 2
