@@ -1,0 +1,17 @@
+d1 $ n "0 2 [2 3] [6 8]" # s "cpu"
+
+-- setting cycles per seconds
+-- this works globally
+setcps (135/60/4) -- default
+setcps 0.7
+
+d2 $ n "6(3, 8) 2*8" # s "cpu2" # squiz 5 # cps "0.5 1"
+
+d2 $ n " 0 4(2, 6) 5 2*4" # s "snare" # squiz 5 # cps (saw + 0.5)
+
+
+-- notice the $ here
+d1 $ fast 2 $ n "0 2 [2 3] [6 8]" # s "cpu"
+
+-- first half slow and second half fast
+d1 $ fast "0.5 2" $ n "0 2 [2 3] [6 8]" # s "cpu"
