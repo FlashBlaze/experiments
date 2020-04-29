@@ -1,0 +1,45 @@
+{- 
+|< is same as #
+> or < is used to denote from where the values are coming from
+> denotes from right to left
+< denotes from left to right
+| denotes from where the structure is coming from
+-}
+d1 $ speed "1 2 0.5" # s "dsynth" |< speed "3 4"
+
+-- removing earlier structure, since it is using the right structure as pipe is on the right side
+d1 $ speed "1 2 0.5" # s "dsynth" >| speed "3 4"
+
+d1 $ s "dsynth" <| speed "3 4"
+
+
+-- take structure from right and values from left
+-- i.e. 1 and 2 from left and using it for speed instead of 3 and 4
+d1 $ speed "1 2 0.5" # s "dsynth" <| speed "3 4"
+
+
+-- adding values i.e. 1+3 and 2+4 and using it for speed
+d1 $ speed "1 2 0.5" # s "dsynth" +| speed "3 4"
+
+d1 $ speed "1 2 0.5" # s "dsynth" |+ speed "3 4"
+
+d1 $ speed "1 2 0.5" # s "dsynth" *| speed "3 4"
+
+d1 $ speed "1 2 0.5" # s "dsynth" |* speed "3 4"
+
+d1 $ speed "1(3,8) 2*2 [0.5 1.5]" # s "dsynth" |* speed "[1 0.5 3]/3"
+
+d1 $ speed ("1(3,8) 2*2 [0.5 1.5]" |* "1 0.5 3") # s "dsynth"
+
+-- taking structure from both sides
+d1 $ speed "1(3,8) 2*2 [0.5*2 1.5]" # s "dsynth" |*| speed "[1 0.5 3]/3"
+
+
+
+
+-- hurry will speed up the pattern and playback rate of sample to pitch it up
+-- similar to
+-- d1 $ fast 2 $ n "0 2 [2 3] [6 8]" # s "cpu" # speed "2"
+d1 $ hurry 2 $ n "0 2 [2 3] [6 8]" # s "cpu"
+
+d1 $ hurry "1 <2 0.5>" $ n "0 2 [2 3]*2 [6 8] 1*2 3" # s "cpu"
