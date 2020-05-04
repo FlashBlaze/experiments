@@ -1,0 +1,17 @@
+d1 $ s "bd*8" # speed (sine + 0.5)
+
+-- this is same as above
+-- segment takes x (in this case 8) values from sine wave and plays
+-- at regular intervals
+d1 $ speed (segment 8 $ range 0.5 2.5 sine) # s "bd"
+
+-- t stands for true and in this case make it true for 3 values out of 8
+d1 $ speed (struct "t(3, 8)" $ range 0.5 2.5 sine) # s "bd"
+
+d1 $ s "bd*8" # speed (square + 0.5)
+
+-- rand jumps from one random value to another
+d1 $ s "sn(5,8)" # speed rand
+
+-- perlin smoothly transitions between one random value to another
+d1 $ s "sn(3,8)" # speed (range 1 3 perlin)
