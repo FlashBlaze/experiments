@@ -17,6 +17,7 @@ void draw() {
   }
 }
 
+// Call drawCircles() every time mouse is clicked
 void mouseReleased() {
 
   drawCircles();
@@ -57,7 +58,7 @@ class Circle {
     noFill();
     ellipse(x, y, 10, 10);
   }
-  
+
   void updateMe() {
     x += xmove;
     y += ymove;
@@ -72,6 +73,28 @@ class Circle {
     }
     if (y < (0-radius)) {
       y = height+radius; 
+    }
+
+    // Collision detection
+    boolean touching = false;
+    for (int i=0; i<_circleArr.length; i++) {
+      Circle otherCirc = _circleArr[i];
+      if (otherCirc != this) {
+        float dis = dist(x, y, otherCirc.x, otherCirc.y);
+        if ((dis - radius - otherCirc.radius) < 0) {
+          touching = true;
+          break;
+        }
+      }
+    }
+    if (touching) {
+      if (alph > 0) { 
+        alph = 0; 
+      }
+    } else {
+      if (alph < 255) {
+        alph = 255; 
+      }
     }
     drawMe();
   }
