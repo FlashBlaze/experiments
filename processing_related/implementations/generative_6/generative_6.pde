@@ -81,19 +81,18 @@ class Circle {
       Circle otherCirc = _circleArr[i];
       if (otherCirc != this) {
         float dis = dist(x, y, otherCirc.x, otherCirc.y);
-        if ((dis - radius - otherCirc.radius) < 0) {
-          touching = true;
-          break;
+        float overlap = dis - radius - otherCirc.radius;
+        
+        // Drawing a circle whose center is the mid point of intersection
+        if (overlap < 0) {
+          float midx, midy;
+          midx = (x + otherCirc.x)/2;
+          midy = (y + otherCirc.y)/2;
+          stroke(0, 100);
+          noFill();
+          overlap *= -1;
+          ellipse(midx, midy, overlap, overlap);
         }
-      }
-    }
-    if (touching) {
-      if (alph > 0) { 
-        alph = 0; 
-      }
-    } else {
-      if (alph < 255) {
-        alph = 255; 
       }
     }
     drawMe();
