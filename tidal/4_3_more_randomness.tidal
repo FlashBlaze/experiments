@@ -1,0 +1,43 @@
+-- randcat picks patterns from a list
+d1 $ fast 2.5 $ s (randcat ["bd sn", "cp arpy", "hh(3,8)"])
+
+-- wrandcat picks patterns from a list, with different probabilities/weightings
+d1 $ s (wrandcat [("cp arpy sn(5, 11)", 0.5), ("bd bd sn", 0.7), ("hh<cpu:0 cpu:8 cp>", 0.4)])
+
+-- in stripe the cycles are random durations, although still fit the cycle
+d1 $ stripe 2 $ n "0 4 ~ 4 2 4 5 ~" # s "cpu2" # squiz 2
+
+-- degrade randomly drops events 50% of the time
+-- similar to ?
+-- d1 $ sound "bd*8?"
+d1 $ degrade $ s "bd*8"
+
+-- degradeBy randomly drops events with a given probability
+-- Just like this:
+-- d1 $ sound "bd*8?0.6"
+d1 $ degradeBy 0.6 $ s "bd*8"
+
+-- sometimes applies a function, sometimes
+d1 $ sometimes (hurry 2) $ n "0 ~ 3 1 5 2 ~ 5" # s "cpu"
+
+-- sometimesBy applies a function, with a given probability
+d1 $ sometimesBy 0.75 (hurry 2) $ n "0 ~ 3 1 5 2 ~ 5" # s "cpu"
+
+-- sometimes shorthands - rarely, almostAlways, often, almostNever etc
+{-
+sometimes = sometimesBy 0.5
+often = sometimesBy 0.75
+rarely = sometimesBy 0.25
+almostNever = sometimesBy 0.1
+almostAlways = sometimesBy 0.9
+-}
+
+-- somecycles is similar to sometimes, but works on whole
+-- cycles at a time, rather than individual events
+d1 $ somecycles (hurry 2) $ n "0 ~ 3 1 5 2 ~ 5" # s "cpu" # speed 1.5
+
+-- someCycles applies a function, to some cycles
+d1 $ somecyclesBy 0.62 (hurry 2) $ n "0 ~ 3 1 5 2 ~ 5" # s "cpu" # speed 1.5
+
+-- randslice plays random slices from a sample
+d1 $ randslice 4 $ s "break:8"
