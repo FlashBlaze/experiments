@@ -2,8 +2,8 @@ float xStart, xNoise, yNoise;
 void setup() {
   size(720, 720);
   // uncomment background(255) and comment background(0) for drawPoint() and drawLine()
-  // background(255);
-  background(0);
+   background(255);
+  //background(0);
   xStart = random(10);
   xNoise = xStart;
   yNoise = random(10);
