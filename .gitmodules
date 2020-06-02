@@ -1,0 +1,3 @@
+[submodule "youtube-resources"]
+	path = youtube-resources
+	url = https://github.com/FlashBlaze/youtube-resources
