@@ -1,0 +1,50 @@
+
+-- playing a major chord
+-- default is c major
+d1 $ n "'maj" # s "superpiano"
+
+d1 $ n "c'min" # s "superpiano"
+
+d1 $ n "c'maj e'maj" # sound "superpiano"
+  # legato 2 # gain 1.4
+
+-- good resource for chords: https://ukutabs.com
+
+-- and strum it a bit with struct:
+d1 $ qtrigger 1 $ jux ((|- n "12") . rev) $ struct "t(5,8,<0 4>)" $ n "<g'maj b'maj c'maj c'min>" # s "superpiano"
+  # room 0.6 # sz 0.9
+
+-- You can get a list of all the chords like this:
+import Sound.Tidal.Chords
+
+chordList
+
+-- raw data
+-- i.e. n "'maj" is same as n [0,4,7]
+chordTable
+
+-- If you ask for more notes than exist in the basic chord, it will go
+-- up the octaves to find more notes, sounding more and more impressive:
+d1 $ n "c'maj'4" # s "superpiano"
+d1 $ n "c'maj'8" # s "superpiano"
+d1 $ n "c'maj'12" # s "superpiano"
+
+-- These are 'broken' chords, where instead of playing the notes at
+-- once, they're played one after another:
+d1 $ arpeggiate $ n "c'maj" # s "superpiano"
+
+d1 $ arpeggiate $ n "c'maj'4" # s "superpiano"
+
+-- The arpeggio happens within the 'step' that the chord occupies:
+-- c major contains 3 notes and e minor 7 contains 4
+d1 $ arpeggiate $ n "c'maj e'min7" # s "superpiano"
+
+-- arp allows you to specify a different way of breaking up the chord:
+d1 $ arp "updown thumbup" $ n "<c'maj'4 e'min7'4>" # s "superpiano"
+
+-- all available arp styles:
+-- up, down, updown, downup, converge, diverge, disconverge, pinkyup,
+-- pinkyupdown, thumbup thumbupdown
+
+-- inversion of chord
+d1 $ n "c'maj'ii" # s "superpiano"
