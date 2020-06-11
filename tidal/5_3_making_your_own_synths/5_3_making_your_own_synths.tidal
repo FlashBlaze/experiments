@@ -1,0 +1,2 @@
+-- pF us used to send custom function
+d1 $ s "test*4" # pF "clamp" 1
