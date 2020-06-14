@@ -1,0 +1,22 @@
+-- original synth link
+-- https://github.com/diegodorado/tidal-synths/blob/master/cs80lead.scd
+
+-- pF stands for parameter of type floating point
+
+d1 $ n "c*4" # s "cs80lead"
+  # sustain 0.35
+  # gain 0.85
+  # crush 3
+  # room 0.2 # sz 0.6
+  # vowel "a e"
+  # pF "dtune" 0.5
+
+dtune = pF "dtune"
+
+d1 $ n "c*4" # s "cs80lead"
+  # sustain 0.35
+  # gain 0.85
+  # crush 3
+  # room 0.2 # sz 0.6
+  # vowel "a e"
+  # dtune 0.5
