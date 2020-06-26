@@ -1,0 +1,104 @@
+-- The 'arpy' folder contains sounds sampled using a pentatonic
+-- 'ritusen' scale, starting with 'c'. In this scale there are five
+-- notes per octave.  So these are the same notes:
+d1 $ n "0 5" # sound "arpy"
+
+-- Pentatonic scales like this are nice to work with because they all
+-- sound good together. So if we add a random note to a melody, it
+-- always sounds 'good':
+
+d1 $ n ("0 [7 2] 3 2" |+ irand 3) # sound "arpy"
+
+-- This isn't really the case on the usual twelve-tone "equal
+-- temperament" (12-TET) scale:
+d1 $ n ("0 [7 2] 3 2" |+ (irand 3)) # sound "superpiano"
+
+-- 12-TET is the scale that pianos etc are normally tuned to in the west.
+
+-- To use a different scale, we can use the "scale" function for converting
+-- numbers from a different scale to 12-TET.
+d1 $ n (scale "indian" $ "0 [7 2] 3 2" |+ (irand 3))
+  # sound "superpiano"
+
+-- There's quite a few available:
+scaleList
+
+-- It's fun to use waveforms to pick notes from a scale. For example,
+-- use a smooth sinewave to select notes from a minor scale:
+
+-- Scale at the moment only accepts whole numbers
+-- to convert the range nums from float to int, floor is used
+
+-- Since there are no events in a sine curve as it is a continous flow
+-- segment 16 is used to sample events from it.
+-- In this case 16 events are sampled in one cycle
+d1 $ segment 16 $ n (scale "minor"
+                     $ floor <$> (range 0 14 sine)
+                    )
+  # sound "supersaw"
+  # legato 0.5
+  # lpf 1000 # lpq 0.1
+  # room 0.5 # sz 0.3
+  # pan (slow 2 "0 1 0")
+
+d1 $ segment 16 $ n (scale "minor"
+                     $ floor <$> (range 0 14 sine)
+                    )
+  # sound "supersaw"
+  # legato 0.5
+  # lpf 1000 # lpq 0.1 |+ n (scale "minor" "<0 3 -5>")
+  # room 0.5 # sz 0.3
+  # pan (slow 2 "0 1 0")
+
+-- Remember that waveforms don't have structure, so don't produce
+-- events until you use something like 'segment', which in the example
+-- above picks 16 notes per cycle.
+
+-- There's also a complication that waveforms produce 'floating point'
+-- decimal numbers, but scale only accepts 'integers' - whole numbers.
+-- The 'floor <$>' bit converts from decimal to whole numbers.  The
+-- "range 0 14" bit converts from the usual range of 0 to 1 to the
+-- given range of 0 to 14.
+
+-- We can make this more exciting by patterning the range:
+d1 $ segment 16 $ n (scale "minor"
+                     $ floor <$> (range "<0 4 -8>" "<12 14 13 -13>" sine)
+                    )
+  # sound "supersaw"
+  # legato 0.5
+  # lpf 1000 # lpq 0.1
+
+-- rhythm using Euclidean syntax.. Taking the opportunity to pattern
+-- the lpf (low pass filter) as well:
+d1 $ struct "t(<9 7>,16)"
+  $ n (scale "minor"
+        $ floor <$> (range "<0 4 -8>" "<12 14 13 -13>" sine)
+      )
+  # sound "supersaw"
+  # legato 0.5
+  # lpf (range 400 5000 saw) # lpq 0.1
+  # room 0.3 # sz 0.9
+
+-- Using scales in this way allows us to play with movement while
+-- still making tunes that make 'sense'.
+d1 $ segment 16 $
+  n (scale "minor"
+      $ floor <$> (slow 2 $ (slow 2 sine + slow 3 cosine) * "<6 -3>"
+                  )
+    )
+  # sound "supersaw"
+  # legato 0.5
+  # lpf (range 400 5000 saw) # lpq 0.1
+
+d1 $ off 0.25 (|+ n 12) $ struct "t(<9 7>,16)" $ segment 16 $
+  n (scale "minor"
+      $ floor <$> (slow 2 $ (slow 2 sine + slow 3 cosine) * "<6 -3>"
+                  )
+    )
+  # sound "supersaw"
+  # legato 0.5
+  # lpf (range 400 5000 saw) # lpq 0.1
+
+-- Note that in the above the 'off' is outside of the 'scale'
+-- function, So we're back in 12-TET land, so add '12' to go up an
+-- octave, rather than the number of notes in the minor scale (7)
