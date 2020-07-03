@@ -1,0 +1,109 @@
+-- `overlay` that simply plays the two given patterns at the same time:
+d1 $ overlay (fast "1 2 3 4" $ sound "lt mt ht ~")
+             (sound "clap:4(3,8)" # speed 2)
+
+-- Similar to this is `stack`, which lets you overlay any number of
+-- patterns on top of each other.
+d1 $ stack [(fast "1 2 3 4" $ sound "lt mt ht ~"),
+            (sound "clap:4(3,8)" # speed 2),
+            sound "[kick:5(5,8), snare:3(7,16,3)]"
+           ]
+
+-- The above composes a list of three patterns together. You can see that
+-- a list is given using square brackets ('[' and ']'), with the patterns
+-- in the list separated by commas (','). You have to remember *not* to
+-- put a comma at the end of the list, only between the elements.
+
+-- stack combines everything into a single pattern. 
+-- This is useful as you can manipulate all those patterns as one.
+d1 $ chunk 4 (hurry 2) $
+  stack [(fast "1 2 3 4" $ sound "lt mt ht ~"),
+         (sound "clap:4(3,8)" # speed 2),
+         sound "[kick:5(5,8), snare:3(7,16,3)]"
+
+-- 'all' will apply the specified effect in this case 'chunk 4 (hurry 2)' to all the patterns
+-- though it won't give us any control regarding which pattern to apply
+-- the effect to
+
+d1 $ fast "1 2 3 4" $ sound "lt mt ht ~"
+d2 $ sound "clap:4(3,8)" # speed 2
+d3 $ sound "[kick:5(5,8), snare:3(7,16,3)]"
+
+all $ (chunk 4 (hurry 2))
+
+-- all id is used to turn of all which means replace the function with a function
+-- which does nothing
+
+all id
+
+-- adding a parameter that applies to the whole stack:
+d1 $ stack [(fast "1 2 3 4" $ sound "lt mt ht ~"),
+            (sound "clap:4(3,8)" # speed 2),
+            sound "[kick:5(5,8), snare:3(7,16,3)]"
+           ] # squiz "<0 2>"
+
+-- So `overlay` and `stack` stack things up, so that they happen at
+-- the same time. Howabout sticking things together over time, so they
+-- happen one after another?
+
+-- Like overlay and stack, there is one function, 'append' for
+-- composing two patterns together, and another, 'cat' for composing a
+-- list of patterns together.
+
+-- For two patterns:
+d1 $ append (fast "1 2 3 4" $ sound "lt mt ht ~")
+            (sound "clap:4(3,8)" # speed 2)
+
+-- For a list of patterns:
+d1 $ cat [fast "1 2 3 4" $ sound "lt mt ht ~",
+          sound "clap:4(3,8)" # speed 2,
+          sound "[kick:5(5,8), snare:3(7,16,3)] bd sn"
+         ]
+
+-- `append` and `cat` maintain the original 'density' of the patterns,
+-- taking one cycle per cycle.
+
+-- There are variants `fastappend` and `fastcat`, that take a cycle
+-- from each of the patterns, and squash them all into a single cycle:
+
+-- For two patterns:
+d1 $ fastappend (fast "1 2 3 4" $ sound "lt mt ht ~")
+  (sound "clap:4(3,8)" # speed 2)
+
+-- For a list of patterns:
+d1 $ fastcat [fast "1 2 3 4" $ sound "lt mt ht ~",
+              sound "clap:4(3,8)" # speed 2,
+              sound "[kick:5(5,8), snare:3(7,16,3)]"
+             ]
+
+-- `seqPLoop` overlaps patterns
+
+-- With `seqPLoop`, you say when each pattern starts and stops.
+
+d1 $ seqPLoop [(0, 1, fast "1 2 3 4" $ sound "lt mt ht ~"),
+               (1, 2, sound "clap:4(3,8)" # speed 2),
+               (2, 3, sound "[kick:5(5,8), snare:3(7,16,3)]")
+              ]
+
+-- overlapping a pattern, a gap of a cycle before the last one plays:
+d1 $ seqPLoop [(0, 2, fast "1 2 3 4" $ sound "lt mt ht ~"),
+               (1, 3, sound "clap:4(3,8)" # speed 2),
+               (5, 6, sound "[kick:5(5,8), snare:3(7,16,3)]")
+              ]
+
+-- If you want to use the same pattern more than once, you can give it a name like this:
+let florence = fast "1 2 3 4" $ sound "lt mt ht ~"
+in
+d1 $ seqPLoop [(0, 2, florence),
+               (1, 3, sound "clap:4(3,8)" # speed 2),
+               (3, 4, sound "[kick:5(5,8), snare:3(7,16,3)]"),
+               (3, 5, florence # coarse 5)
+              ]
+
+-- If you don't want the pattern sequence to loop, then use
+-- seqP. You'll need to use something like `qtrigger`, so it starts
+-- from cycle 0
+d1 $ qtrigger 1 $ seqP [(0, 2, fast "1 2 3 4" $ sound "lt mt ht ~"),
+                        (1, 3, sound "clap:4(3,8)" # speed 2),
+                        (5, 6, sound "[kick:5(5,8), snare:3(7,16,3)]")
+                       ]
